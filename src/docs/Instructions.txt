@@ -1,0 +1,27 @@
+How to create a simulator
+
+1. Implement ISimulationEvent or extend AbstractEvent to describe the 
+state-changing events of your system
+
+2. Define the system state
+2.1 Implement IState.update(). This method changes the state of the system 
+on the occurence of an event
+2.2 Optionally implement IStateMemento to save state information 
+before effecting a transition.
+NOTE: If you do not implement the memento then the StateTransitionEvent
+will have null for the old state
+
+3. Implement IEventProcess or extend AbstractEventProcess.
+If you extends AdvancedEventProcess you only need to define update() 
+to describe how changes in the state affect the event queue.
+You can use the insert() method for inserting newly created events.
+NOTE: If you extend AbstractEventProcess or make your EventProcess 
+implement IStateTransitionListener, the the simulator will automatically
+update your event process when a state transition occurs, otherwise
+you must manually update the event process 
+(or predefine all the events that will occur in the simulation)
+
+4. You are ready to create a simulator:
+4.1. Instantiate a Simulator using your state and event process.
+4.2. Register state transition listeners. Any accumulators that 
+     extend SimulationAccumulator will be automatically registered.

@@ -1,0 +1,5 @@
+- The Server example results differ considerable from book.
+   Design simulator debugging tools to debug this example
+- Add Jobshop tests
+- Remove/merge src_v1
+- Decouple accumulator code from process dynamics via listeners
