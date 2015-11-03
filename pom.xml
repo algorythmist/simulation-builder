@@ -7,10 +7,14 @@
 
 	<properties>
 		<targetJdk>1.7</targetJdk>
-		<slf4j-version>1.7.12</slf4j-version>
+		<commons-math.version>3.5</commons-math.version>
+		<commons-beanutils.version>1.9.2</commons-beanutils.version>
+		<commons-configuration.version>1.10</commons-configuration.version>
+		<commons-lang.version>3.4</commons-lang.version>
+		<slf4j.version>1.7.12</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
-		<junit-version>4.12</junit-version>
-		<jacoco-version>0.7.5.201505241946</jacoco-version>
+		<junit.version>4.12</junit.version>
+		<jacoco.version>0.7.5.201505241946</jacoco.version>
 	</properties>
 
 
@@ -18,22 +22,22 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
-			<version>3.3</version>
+			<version>${commons-math.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils-core</artifactId>
-			<version>1.8.3</version>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
-			<version>1.10</version>
+			<version>${commons-configuration.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.3.2</version>
+			<version>${commons-lang.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>jfree</groupId>
@@ -44,12 +48,12 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j-version}</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j-version}</version>
+			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -61,7 +65,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit-version}</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -81,7 +85,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.1.201405082137</version>
+				<version>${jacoco.version}</version>
 				<configuration>
 					<destfile>target/coverage-reports/jacoco-unit.exec</destfile>
 					<datafile>target/coverage-reports/jacoco-unit.exec</datafile>
@@ -105,7 +109,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
