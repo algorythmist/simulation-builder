@@ -1,6 +1,5 @@
 package com.tecacet.simulator.inventory;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +38,12 @@ public class InventorySystem implements StochasticSystem<InventoryState>, Termin
 
     private Policy policy;
 
-    public InventorySystem() throws ConfigurationException {
+    public InventorySystem() {
         readInputParameters();
     }
 
     // Runtime params
-    protected void readInputParameters() throws ConfigurationException {
+    protected void readInputParameters() {
         PropertiesLoader loader = new PropertiesLoader(INPUT_FILE);
         loader.readInputParameters(this);
         policy = new Policy(20, 40);
@@ -57,7 +56,7 @@ public class InventorySystem implements StochasticSystem<InventoryState>, Termin
     }
 
     @Override
-    public void initialize(SimulationEnvironment<InventoryState> environment) throws SimulationException {
+    public void initialize(SimulationEnvironment<InventoryState> environment) {
         // schedule next demand
         scheduleDemand(0.0, environment);
         // schedule next evaluation in a month

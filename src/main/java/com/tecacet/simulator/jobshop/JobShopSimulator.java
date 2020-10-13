@@ -1,7 +1,9 @@
 package com.tecacet.simulator.jobshop;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.slf4j.Logger;
@@ -47,7 +49,7 @@ public class JobShopSimulator {
     static final String INPUT_FILE = "jobshop.ini";
 
     protected EventQueue eventQueue = new EventQueue();
-    protected RandomDataGenerator generator = null;
+    protected RandomDataGenerator generator;
     
     protected int iteration = 0;
     protected double currentTime = 0.0;
@@ -90,9 +92,14 @@ public class JobShopSimulator {
         }
     }
 
-    private void readInputParameters(String sFilename) throws SimulationException {
+    private void readInputParameters(String filename) throws SimulationException {
+        FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+                new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
+                        .configure(new Parameters().properties()
+                                .setFileName(filename)
+                                .setThrowExceptionOnMissing(true));
         try {
-            PropertiesConfiguration parameters = new PropertiesConfiguration(sFilename);
+            PropertiesConfiguration parameters = builder.getConfiguration();
             seed = parameters.getLong("SEED", 0);
             meanInterarrivalTime = parameters.getDouble("MEAN_INTERARRIVAL");
             maxTime = parameters.getInt("FINAL_TIME", 1000);
@@ -102,7 +109,7 @@ public class JobShopSimulator {
         }
     }
 
-    void scheduleArrival(double time) throws SimulationException {
+    void scheduleArrival(double time) {
         time += generator.nextExponential(meanInterarrivalTime);
         Job job = getJobInstance();
         job.startTime = time;
@@ -110,7 +117,7 @@ public class JobShopSimulator {
         eventQueue.insert(new JobShopEvent(JobShopEvent.ARRIVAL, time, job));
     }
 
-    public void scheduleDeparture(double time, Job job) throws SimulationException {
+    public void scheduleDeparture(double time, Job job) {
         logger.debug("Scheduling departure of job " + job);
         Task task = job.getCurrentTask();
         time += nextErlang2(task.meanServiceTime);

@@ -12,9 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.ExponentialDistribution;
-import org.apache.commons.math.distribution.ExponentialDistributionImpl;
+import org.apache.commons.math3.distribution.ExponentialDistribution;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -33,7 +31,6 @@ import com.tecacet.simulator.queue.QueueState;
 import com.tecacet.simulator.queue.QueueingSystem;
 import com.tecacet.util.JFreeChartUtil;
 
-@SuppressWarnings("serial")
 public class QueueingSystemDemo extends JPanel implements ActionListener {
 
     private JFormattedTextField arrivalRate;
@@ -78,7 +75,7 @@ public class QueueingSystemDemo extends JPanel implements ActionListener {
         this.add(box);
     }
 
-    public static void main(String[] args) throws MathException, SimulationException {
+    public static void main(String[] args) {
         JPanel panel = new QueueingSystemDemo();
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,15 +95,12 @@ public class QueueingSystemDemo extends JPanel implements ActionListener {
             return;
         }
         final Number time = (Number) lengthOfSimulation.getValue();
-        ExponentialDistribution arrival = new ExponentialDistributionImpl(ar);
-        ExponentialDistribution service = new ExponentialDistributionImpl(sr);
+        ExponentialDistribution arrival = new ExponentialDistribution(ar);
+        ExponentialDistribution service = new ExponentialDistribution(sr);
         QueueingSystem system = new QueueingSystem(arrival, service, (Integer)numberOfServers.getValue());
 
-        Simulator<QueueState> simulator = new Simulator<QueueState>(system, new Terminator<QueueState>() {
-            public boolean simulationEnded(SimulationEnvironment<QueueState> environment) {
-                return environment.getCurrentTime() >= time.doubleValue();
-            }
-        });
+        Simulator<QueueState> simulator = new Simulator<>(system,
+                environment -> environment.getCurrentTime() >= time.doubleValue());
         try {
             simulator.runSimulation();
         } catch (SimulationException e) {

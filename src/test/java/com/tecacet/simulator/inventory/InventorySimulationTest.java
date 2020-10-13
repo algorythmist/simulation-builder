@@ -2,20 +2,18 @@ package com.tecacet.simulator.inventory;
 
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.junit.Test;
 
-import com.tecacet.simulator.SimulationException;
 import com.tecacet.simulator.Simulator;
 import com.tecacet.simulator.StatisticsRegistry;
 
 public class InventorySimulationTest {
 
     @Test
-    public void testInventorySimulation() throws SimulationException, ConfigurationException {
+    public void testInventorySimulation() throws Exception {
         InventorySystem inventory = new InventorySystem();
-        Simulator<InventoryState> simulator = new Simulator<InventoryState>(inventory, inventory);
+        Simulator<InventoryState> simulator = new Simulator<>(inventory, inventory);
         simulator.setSeed(123798L);
         simulator.runSimulation();
 
@@ -31,7 +29,7 @@ public class InventorySimulationTest {
     }
 
     @Test
-    public void testAll() throws ConfigurationException, SimulationException {
+    public void testAll() throws Exception {
         int[] thresholds = { 20, 40, 60 };
         int[] storages = { 40, 60, 80, 100 };
 
@@ -40,7 +38,7 @@ public class InventorySimulationTest {
             for (int storage : storages) {
                 if (storage > threshold) {
                     InventorySystem inventory = new InventorySystem();
-                    Simulator<InventoryState> simulator = new Simulator<InventoryState>(inventory, inventory);
+                    Simulator<InventoryState> simulator = new Simulator<>(inventory, inventory);
                     inventory.setThreshold(threshold);
                     inventory.setMaxStorage(storage);
                     simulator.runSimulation();
