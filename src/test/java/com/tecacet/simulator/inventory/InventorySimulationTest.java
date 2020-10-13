@@ -46,9 +46,9 @@ public class InventorySimulationTest {
                     SummaryStatistics orderingCost = registry.getStatistics(InventorySystem.ORDERING_COST);
                     SummaryStatistics shortageCost = registry.getTimeAwareStatistics(InventorySystem.SHORTAGE_COST);
                     SummaryStatistics holdingCost = registry.getTimeAwareStatistics(InventorySystem.HOLDING_COST);
-                    System.err.println(String.format("(%d,%d): %.2f %f %f", threshold, storage, orderingCost.getSum()
+                    System.err.printf("(%d,%d): %.2f %f %f%n", threshold, storage, orderingCost.getSum()
                             / inventory.getSimulationMonths(), holdingCost.getSum() / inventory.getSimulationMonths(),
-                            shortageCost.getSum() / inventory.getSimulationMonths()));
+                            shortageCost.getSum() / inventory.getSimulationMonths());
                 }
             }
         }
