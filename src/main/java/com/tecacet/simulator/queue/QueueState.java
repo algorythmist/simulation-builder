@@ -1,5 +1,8 @@
 package com.tecacet.simulator.queue;
 
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.Serializable;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -9,16 +12,16 @@ import java.util.LinkedList;
  * @author Dimitri Papaioannou
  *
  */
-public class QueueState {
+public class QueueState implements Serializable {
 
     private Deque<Customer> customerQueue;
     private Server[] servers;
 
     public QueueState(int serverCount) {
-        this(serverCount, new LinkedList<Customer>());
+        this(serverCount, new LinkedList<>());
     }
 
-    public QueueState(int serverCount, Deque<Customer> queue) {
+    private QueueState(int serverCount, Deque<Customer> queue) {
         customerQueue = queue;
         servers = new Server[serverCount];
         for (int i = 0; i < serverCount; i++) {
@@ -35,8 +38,7 @@ public class QueueState {
 
     /**
      * Indicates if all servers are busy
-     * 
-     * @return
+     *
      */
     public boolean allBusy() {
         for (Server server : servers) {
@@ -48,8 +50,8 @@ public class QueueState {
     }
 
     /**
-     * 
-     * @param customer
+     * A customer enters the system
+     * @param customer the customer
      * @return the server where the customer was accepted, -1 if queued
      */
     public int accept(Customer customer) {
@@ -83,8 +85,7 @@ public class QueueState {
 
     /**
      * The number of customers waiting in queue
-     * 
-     * @return
+     *
      */
     public int getQueueSize() {
         return customerQueue.size();
@@ -92,8 +93,7 @@ public class QueueState {
 
     /**
      * The number of customers waiting in queue and being serviced
-     * 
-     * @return
+     *
      */
     public int getNumberInSystem() {
         int number = customerQueue.size();
@@ -103,5 +103,10 @@ public class QueueState {
             }
         }
         return number;
+    }
+
+    @Override
+    public QueueState clone() {
+        return SerializationUtils.clone(this);
     }
 }

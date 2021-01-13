@@ -1,7 +1,9 @@
 package com.tecacet.simulator.queue;
 
 
-public class Server {
+import java.io.Serializable;
+
+public class Server implements Serializable {
 
     private Customer customerInService = null;
 
@@ -13,11 +15,13 @@ public class Server {
         return customerInService;
     }
 
-    /** accept a new customer in service */
+    /**
+     * accept a new customer in service
+     */
     public void accept(Customer c) {
         customerInService = c;
     }
-    
+
     public Customer departure() {
         Customer customer = customerInService;
         customerInService = null;

@@ -29,7 +29,7 @@ public class EventQueue {
     }
 
     protected EventComparator comparator = new EventComparator();
-    protected PriorityQueue<SimulationEvent> list = new PriorityQueue<SimulationEvent>(100, comparator);
+    protected PriorityQueue<SimulationEvent> list = new PriorityQueue<>(100, comparator);
     protected List<SimulationEvent> pastEvents = null;
 
     public EventQueue() {
@@ -38,7 +38,7 @@ public class EventQueue {
 
     public EventQueue(boolean trackPastEvents) {
         if (trackPastEvents) {
-            pastEvents = new ArrayList<SimulationEvent>();
+            pastEvents = new ArrayList<>();
         }
     }
 
@@ -50,8 +50,8 @@ public class EventQueue {
      * Get the next time-ordered event from the queue. The event is removed from
      * the queue
      * 
-     * @return
-     * @throws SimulationException
+     * @return the next event
+     * @throws SimulationException if something goes wrong
      */
     public SimulationEvent getNextEvent() throws SimulationException {
         if (isEmpty()) {

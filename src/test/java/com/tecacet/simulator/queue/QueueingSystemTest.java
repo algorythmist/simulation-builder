@@ -2,17 +2,14 @@ package com.tecacet.simulator.queue;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.commons.math3.distribution.ExponentialDistribution;
-
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
-import org.junit.Test;
-
 import com.tecacet.simulator.SimulationEnvironment;
 import com.tecacet.simulator.SimulationException;
 import com.tecacet.simulator.Simulator;
 import com.tecacet.simulator.Terminator;
-import com.tecacet.simulator.queue.QueueState;
-import com.tecacet.simulator.queue.QueueingSystem;
+
+import org.apache.commons.math3.distribution.ExponentialDistribution;
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+import org.junit.Test;
 
 public class QueueingSystemTest {
 
@@ -21,17 +18,13 @@ public class QueueingSystemTest {
         ExponentialDistribution arrival = new ExponentialDistribution(1.0);
         ExponentialDistribution service = new ExponentialDistribution(0.5);
         QueueingSystem system = new QueueingSystem(arrival, service, 1);
-        Simulator<QueueState> simulator = new Simulator<QueueState>(system, new Terminator<QueueState>() {
-            public boolean simulationEnded(SimulationEnvironment<QueueState> environment) {
-                return environment.getCurrentIteration() >= 5000;
-            }
-        });
+        Simulator<QueueState> simulator = new Simulator<>(system, environment -> environment.getCurrentIteration() >= 10000);
         simulator.runSimulation();
         SummaryStatistics numberInQueueArea =
-            simulator.getAccumulatorRegistry().getTimeAwareStatistics(QueueingSystem.INQUEUE_AREA_ACCUMULATOR);
+                simulator.getAccumulatorRegistry().getTimeAwareStatistics(QueueingSystem.INQUEUE_AREA_ACCUMULATOR);
         assertEquals(0.5, numberInQueueArea.getMean(), 0.1);
-        //        SummaryStatistics delayAccumulator = simulator.getAccumulatorRegistry().getAccumulator(QueueingSystem.DELAY_ACCUMULATOR);
-        //        System.out.println(delayAccumulator.getMean());
+        SummaryStatistics delayAccumulator = simulator.getAccumulatorRegistry().getStatistics(QueueingSystem.DELAY_ACCUMULATOR);
+        System.out.println(delayAccumulator.getMean());
     }
 
     @Test
@@ -42,11 +35,7 @@ public class QueueingSystemTest {
         ExponentialDistribution service = new ExponentialDistribution(1 / serviceRate);
         QueueingSystem system = new QueueingSystem(arrival, service, 1);
 
-        Simulator<QueueState> simulator = new Simulator<QueueState>(system, new Terminator<QueueState>() {
-            public boolean simulationEnded(SimulationEnvironment<QueueState> environment) {
-                return environment.getCurrentIteration() >= 10000;
-            }
-        });
+        Simulator<QueueState> simulator = new Simulator<>(system, environment -> environment.getCurrentIteration() >= 10000);
         simulator.runSimulation();
         SummaryStatistics numberInQueue = simulator.getAccumulatorRegistry().getTimeAwareStatistics(QueueingSystem.INQUEUE_AREA_ACCUMULATOR);
         SummaryStatistics queueWaitingTime = simulator.getAccumulatorRegistry().getStatistics(QueueingSystem.QUEUE_WAITING);

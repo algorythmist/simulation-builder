@@ -1,9 +1,11 @@
 package com.tecacet.simulator.queue;
 
+import java.io.Serializable;
+
 /**
  * Generic type representing a client of a service queue
  */
-public class Customer {
+public class Customer implements Serializable {
     static int nextId = 0;
 
     private int id;
@@ -17,12 +19,6 @@ public class Customer {
         arrivalTime = time;
     }
 
-    /** Copy constructor */
-    public Customer(Customer c) {
-        id = c.id;
-        arrivalTime = c.arrivalTime;
-    }
-
     public int getId() {
         return id;
     }
@@ -31,15 +27,14 @@ public class Customer {
         return arrivalTime;
     }
 
-    public Customer copy() {
-        return new Customer(this);
-    }
-
     public String toString() {
         return Integer.toString(id);
     }
 
     public boolean equals(Object o) {
+        if (!(o instanceof Customer)) {
+            return false;
+        }
         return id == ((Customer) o).id;
     }
 

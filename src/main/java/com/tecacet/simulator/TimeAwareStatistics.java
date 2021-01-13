@@ -17,13 +17,8 @@ public class TimeAwareStatistics extends SummaryStatistics {
     protected Clock clock;
     protected double lastEventTime = 0.0;
     protected boolean saveHistory = true;
-    protected Map<Double, Double> history = new TreeMap<Double, Double>();
+    protected Map<Double, Double> history = new TreeMap<>();
 
-    /**
-     * @param simulator
-     *            the simulator that will monitor state-change events and update
-     *            the accumulator
-     */
     public TimeAwareStatistics(Clock c) {
         clock = c;
     }

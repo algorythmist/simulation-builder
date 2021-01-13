@@ -5,7 +5,7 @@ package com.tecacet.simulator;
  * A helper class that keeps track of time.
  */
 public class Clock {
-    double time;
+    private double time;
 
     /** Create a clock starting at time 0.0 */
     public Clock() {

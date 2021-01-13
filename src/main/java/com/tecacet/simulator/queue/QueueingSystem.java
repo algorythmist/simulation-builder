@@ -60,8 +60,7 @@ public class QueueingSystem implements StochasticSystem<QueueState> {
     private QueueState getNextStatePrv(QueueEvent event, SimulationEnvironment<QueueState> environment) {
         SummaryStatistics totalWaitingTime = environment.getAccumulatorRegistry().getStatistics(TOTAL_WAITING);
         SummaryStatistics queueWaitingTime = environment.getAccumulatorRegistry().getStatistics(QUEUE_WAITING);
-        SummaryStatistics numberInQueue = environment.getAccumulatorRegistry().getTimeAwareStatistics(
-                INQUEUE_AREA_ACCUMULATOR);
+        SummaryStatistics numberInQueue = environment.getAccumulatorRegistry().getTimeAwareStatistics(INQUEUE_AREA_ACCUMULATOR);
         SummaryStatistics numberInSystem = environment.getAccumulatorRegistry()
                 .getTimeAwareStatistics(NUMBER_IN_SYSTEM);
         SummaryStatistics customersDelayed = environment.getAccumulatorRegistry().getStatistics(
@@ -92,8 +91,7 @@ public class QueueingSystem implements StochasticSystem<QueueState> {
             int server = state.accept(customer);
             if (server >= 0) {
                 customer.setTimeServiceStarted(event.getTime());
-                // server was idle, serve the new arrival, so we need a
-                // departure
+                // server was idle, serve the new arrival, so we need departure
                 logger.debug("Customer entering service at " + event.getTime());
                 addDeparture(event.getTime(), server, environment);
                 delayAccumulator.addValue(0.0);
@@ -117,7 +115,7 @@ public class QueueingSystem implements StochasticSystem<QueueState> {
                 double delay = event.getTime() - customer1.getArrivalTime();
                 delayAccumulator.addValue(delay);
             } else {
-                // TODO
+                //TODO: measure server idle time
                 logger.debug("Server idle...");
             }
             break;
