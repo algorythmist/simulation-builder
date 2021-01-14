@@ -10,14 +10,14 @@ public class StatisticsRegistryTest {
 
     @Test
     public void testGetAccumulator() {
-        StatisticsRegistry registry = new StatisticsRegistry(new Clock());
+        StatisticsRegistry registry = new StatisticsRegistry(new InternalClock());
         SummaryStatistics statistics = registry.getStatistics("test");
         assertNotNull(statistics);
     }
 
     @Test
     public void testGetTimeAccumulator() {
-        StatisticsRegistry registry = new StatisticsRegistry(new Clock());
+        StatisticsRegistry registry = new StatisticsRegistry(new InternalClock());
         SummaryStatistics statistics = registry.getTimeAwareStatistics("test");
         assertEquals(TimeAwareStatistics.class, statistics.getClass());
 

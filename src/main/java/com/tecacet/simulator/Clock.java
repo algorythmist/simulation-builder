@@ -1,19 +1,23 @@
 package com.tecacet.simulator;
 
+public interface Clock {
+
+    double getTime();
+}
 
 /**
  * A helper class that keeps track of time.
  */
-public class Clock {
+class InternalClock implements Clock {
     private double time;
 
     /** Create a clock starting at time 0.0 */
-    public Clock() {
+    public InternalClock() {
         time = 0.0;
     }
 
     /** Create a clock starting at a certain time */
-    public Clock(double time) {
+    public InternalClock(double time) {
         this.time = time;
     }
     
@@ -24,6 +28,7 @@ public class Clock {
     }
 
     /** Get the time stored in the clock */
+    @Override
     public double getTime() {
         return time;
     }

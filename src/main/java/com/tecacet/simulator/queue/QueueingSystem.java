@@ -101,8 +101,6 @@ public class QueueingSystem implements StochasticSystem<QueueState> {
             }
             break;
         case QueueEvent.DEPARTURE:
-            // logger.debug(event.getFormattedTime() + ": Departure of customer
-            // " + state.getCustomerInService().getID());
             Customer customerLeaving = state.departure(event.getServer());
             totalWaitingTime.addValue(event.getTime() - customerLeaving.getArrivalTime());
             queueWaitingTime.addValue(customerLeaving.getTimeServiceStarted() - customerLeaving.getArrivalTime());

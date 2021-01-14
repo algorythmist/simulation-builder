@@ -15,8 +15,7 @@ public class SimulationEvent {
 
     /**
      * This integer identifies the type of event
-     * 
-     * @return
+     *
      */
     public int getType() {
         return type;
@@ -24,8 +23,7 @@ public class SimulationEvent {
 
     /**
      * Time the event occurred
-     * 
-     * @return
+     *
      */
     public double getTime() {
         return time;

@@ -1,5 +1,21 @@
 package com.tecacet.simulator.demo;
 
+import com.tecacet.simulator.SimulationException;
+import com.tecacet.simulator.Simulator;
+import com.tecacet.simulator.TimeAwareStatistics;
+import com.tecacet.simulator.queue.QueueState;
+import com.tecacet.simulator.queue.QueueingSystem;
+import com.tecacet.util.JFreeChartUtil;
+
+import org.apache.commons.math3.distribution.ExponentialDistribution;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -12,32 +28,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.commons.math3.distribution.ExponentialDistribution;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-
-import com.tecacet.simulator.Clock;
-import com.tecacet.simulator.SimulationEnvironment;
-import com.tecacet.simulator.SimulationException;
-import com.tecacet.simulator.Simulator;
-import com.tecacet.simulator.Terminator;
-import com.tecacet.simulator.TimeAwareStatistics;
-import com.tecacet.simulator.queue.QueueState;
-import com.tecacet.simulator.queue.QueueingSystem;
-import com.tecacet.util.JFreeChartUtil;
-
 public class QueueingSystemDemo extends JPanel implements ActionListener {
 
-    private JFormattedTextField arrivalRate;
-    private JFormattedTextField serviceRate;
-    private JFormattedTextField numberOfServers;
-    private JFormattedTextField lengthOfSimulation;
-    private ChartPanel chartPanel;
+    private final JFormattedTextField arrivalRate;
+    private final JFormattedTextField serviceRate;
+    private final JFormattedTextField numberOfServers;
+    private final JFormattedTextField lengthOfSimulation;
+    private final ChartPanel chartPanel;
 
     public QueueingSystemDemo() {
         arrivalRate = new JFormattedTextField(NumberFormat.getNumberInstance());
@@ -54,7 +51,7 @@ public class QueueingSystemDemo extends JPanel implements ActionListener {
         lengthOfSimulation.setValue(50.0);
         JButton run = new JButton("Run Simulation");
         run.addActionListener(this);
-        XYDataset collection = JFreeChartUtil.getTimeSeriesCollection("Number in queue", new TimeAwareStatistics(new Clock()));
+        XYDataset collection = JFreeChartUtil.getTimeSeriesCollection("Number in queue", new TimeAwareStatistics(null));
         JFreeChart chart = ChartFactory.createXYLineChart("Queue Size", "time", "queue size", collection,
                 PlotOrientation.VERTICAL, true, false, false);
 
@@ -97,7 +94,7 @@ public class QueueingSystemDemo extends JPanel implements ActionListener {
         final Number time = (Number) lengthOfSimulation.getValue();
         ExponentialDistribution arrival = new ExponentialDistribution(ar);
         ExponentialDistribution service = new ExponentialDistribution(sr);
-        QueueingSystem system = new QueueingSystem(arrival, service, (Integer)numberOfServers.getValue());
+        QueueingSystem system = new QueueingSystem(arrival, service, (Integer) numberOfServers.getValue());
 
         Simulator<QueueState> simulator = new Simulator<>(system,
                 environment -> environment.getCurrentTime() >= time.doubleValue());
@@ -109,15 +106,15 @@ public class QueueingSystemDemo extends JPanel implements ActionListener {
         }
         TimeAwareStatistics numberInQueue = (TimeAwareStatistics) simulator.getAccumulatorRegistry()
                 .getTimeAwareStatistics(QueueingSystem.INQUEUE_AREA_ACCUMULATOR);
-        TimeAwareStatistics serverBusy = (TimeAwareStatistics) 
-            simulator.getAccumulatorRegistry().getStatistics(QueueingSystem.SERVER_AREA_ACCUMULATOR);
+        TimeAwareStatistics serverBusy = (TimeAwareStatistics)
+                simulator.getAccumulatorRegistry().getStatistics(QueueingSystem.SERVER_AREA_ACCUMULATOR);
         XYSeries queue = JFreeChartUtil.getXYSeries("Number in queue", numberInQueue);
         XYSeries server = JFreeChartUtil.getXYSeries("Server Busy", serverBusy);
         XYSeriesCollection seriesCollection = new XYSeriesCollection();
         seriesCollection.addSeries(queue);
         //seriesCollection.addSeries(server);
-        
-        
+
+
         JFreeChart chart = ChartFactory.createXYLineChart("Queue Size", "time", "queue size", seriesCollection,
                 PlotOrientation.VERTICAL, true, false, false);
         //chart.getPlot().setBackgroundPaint(Color.WHITE);

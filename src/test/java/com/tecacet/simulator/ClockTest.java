@@ -8,7 +8,7 @@ public class ClockTest {
 
     @Test
     public void testClockDouble() {
-        Clock clock = new Clock(10.0);
+        InternalClock clock = new InternalClock(10.0);
         assertEquals(10.0, clock.getTime(),0.001);
         clock.setTime(20.0);
         assertEquals(20.0, clock.getTime(),0.001);

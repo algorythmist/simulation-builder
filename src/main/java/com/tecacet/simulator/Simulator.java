@@ -11,7 +11,7 @@ public class Simulator<S> implements SimulationEnvironment<S> {
     private S currentState;
     protected EventQueue eventQueue;
     protected int iteration = 0;
-    protected Clock clock;
+    protected InternalClock clock;
     protected StochasticSystem<S> stochasticSystem;
     protected Terminator<S> terminator;
     protected RandomDataGenerator generator;
@@ -28,7 +28,7 @@ public class Simulator<S> implements SimulationEnvironment<S> {
         this.generator = randomData;
         this.terminator = terminator;
         eventQueue = new EventQueue();
-        clock = new Clock();
+        clock = new InternalClock();
         registry = new StatisticsRegistry(clock);
     }
 
@@ -101,6 +101,10 @@ public class Simulator<S> implements SimulationEnvironment<S> {
     @Override
     public StatisticsRegistry getAccumulatorRegistry() {
         return registry;
+    }
+
+    public Clock getClock() {
+        return clock;
     }
 
 }

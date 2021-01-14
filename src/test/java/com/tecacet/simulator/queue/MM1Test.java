@@ -57,8 +57,11 @@ public class MM1Test {
                     QueueingSystem.CUSTOMERS_DELAYED_ACCUMULATOR);
             return customersDelayed.getN() >= 10000;
         });
+
         simulator.runSimulation();
         StatisticsRegistry registry = simulator.getAccumulatorRegistry();
+        System.out.println(simulator.getClock().getTime());
+
         assertEquals(10000L, registry.getStatistics(MM1System.CUSTOMERS_DELAYED_ACCUMULATOR).getN());
         assertEquals(0.5, registry.getStatistics(QueueingSystem.DELAY_ACCUMULATOR).getMean(), 0.1); // average
         // delay

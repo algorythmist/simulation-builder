@@ -11,7 +11,7 @@ public class TimeAwareStatisticsTest {
 
     @Test
     public void testGetTimeAverage() {
-        Clock clock = new Clock(100);
+        InternalClock clock = new InternalClock(100);
         TimeAwareStatistics accumulator = new TimeAwareStatistics(clock);
         accumulator.addValue(1.0);
         clock.setTime(300);
@@ -21,7 +21,7 @@ public class TimeAwareStatisticsTest {
     
     @Test
     public void testHistory() {
-        Clock clock = new Clock(100);
+        InternalClock clock = new InternalClock(100);
         TimeAwareStatistics accumulator = new TimeAwareStatistics(clock);
         accumulator.addValue(1.0);
         clock.setTime(300);
