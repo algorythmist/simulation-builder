@@ -19,13 +19,9 @@ public class MM1Test {
 
     @Test
     public void testFiveIterations() throws SimulationException {
-        final Terminator<QueueState> terminator = new Terminator<QueueState>() {
-            public boolean simulationEnded(SimulationEnvironment<QueueState> env) {
-                return (env.getCurrentIteration() >= 5);
-            }
-        };
+        final Terminator<QueueState> terminator = env -> (env.getCurrentIteration() >= 5);
         MM1System mm1 = new MM1System();
-        Simulator<QueueState> simulator = new Simulator<QueueState>(mm1, terminator);
+        Simulator<QueueState> simulator = new Simulator<>(mm1, terminator);
         simulator.runSimulation();
 
     }
@@ -33,7 +29,7 @@ public class MM1Test {
     @Test
     public void testSimulation() throws Exception {
         final MM1System mm1 = new MM1System();
-        Simulator<QueueState> simulator = new Simulator<QueueState>(mm1, mm1.getDefaultTerminator());
+        Simulator<QueueState> simulator = new Simulator<>(mm1, mm1.getDefaultTerminator());
         simulator.setSeed(19348468L);
         simulator.runSimulation();
         StatisticsRegistry registry = simulator.getAccumulatorRegistry();
@@ -56,13 +52,10 @@ public class MM1Test {
         ExponentialDistribution arrival = new ExponentialDistribution(1.000);
         ExponentialDistribution service = new ExponentialDistribution(0.500);
         QueueingSystem mm1 = new QueueingSystem(arrival, service, 1);
-        final Simulator<QueueState> simulator = new Simulator<QueueState>(mm1, new Terminator<QueueState>() {
-
-            public boolean simulationEnded(SimulationEnvironment<QueueState> env) {
-                SummaryStatistics customersDelayed = env.getAccumulatorRegistry().getStatistics(
-                        QueueingSystem.CUSTOMERS_DELAYED_ACCUMULATOR);
-                return customersDelayed.getN() >= 10000;
-            }
+        final Simulator<QueueState> simulator = new Simulator<>(mm1, env -> {
+            SummaryStatistics customersDelayed = env.getAccumulatorRegistry().getStatistics(
+                    QueueingSystem.CUSTOMERS_DELAYED_ACCUMULATOR);
+            return customersDelayed.getN() >= 10000;
         });
         simulator.runSimulation();
         StatisticsRegistry registry = simulator.getAccumulatorRegistry();

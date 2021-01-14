@@ -12,8 +12,6 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
  */
 public class TimeAwareStatistics extends SummaryStatistics {
 
-    private static final long serialVersionUID = 6144305244467076301L;
-    
     protected Clock clock;
     protected double lastEventTime = 0.0;
     protected boolean saveHistory = true;

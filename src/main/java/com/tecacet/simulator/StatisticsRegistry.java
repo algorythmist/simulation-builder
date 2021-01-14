@@ -10,7 +10,7 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
  */
 public class StatisticsRegistry {
 
-    private Map<String, SummaryStatistics> accumulators = new HashMap<String, SummaryStatistics>();
+    private Map<String, SummaryStatistics> accumulators = new HashMap<>();
     private Clock clock;
 
     public StatisticsRegistry(Clock clock) {
@@ -36,9 +36,7 @@ public class StatisticsRegistry {
     }
 
     public void clearAll() {
-        for (SummaryStatistics ss : accumulators.values()) {
-            ss.clear();
-        }
+        accumulators.values().forEach(SummaryStatistics::clear);
     }
 
 }

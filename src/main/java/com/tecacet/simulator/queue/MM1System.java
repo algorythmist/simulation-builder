@@ -1,42 +1,31 @@
 package com.tecacet.simulator.queue;
 
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.tecacet.simulator.SimulationEnvironment;
 import com.tecacet.simulator.Terminator;
 import com.tecacet.util.PropertiesLoader;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The simplest queuing system: 1 server, exponential arrival and departure rate
- * 
+ *
  * @author Dimitri Papaioannou
- * 
  */
 public class MM1System extends QueueingSystem {
 
-    private final class DefaultTerminator implements Terminator<QueueState> {
-        // simulation ends after a certain number of delays
-        @Override
-        public boolean simulationEnded(SimulationEnvironment<QueueState> env) {
-            SummaryStatistics customersDelayed = env.getAccumulatorRegistry().getStatistics(
-                    CUSTOMERS_DELAYED_ACCUMULATOR);
-            return customersDelayed.getN() >= delaysRequired;
-        }
-    }
-
     protected static final String PROPERTIES_FILE = "mm1.ini";
-
-    // Parameters
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private int delaysRequired;
-
     private double meanInterarrivalTime;
 
+    // Parameters
     private double meanServiceTime;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    public MM1System() {
+        new PropertiesLoader(PROPERTIES_FILE).readInputParameters(this);
+    }
 
     public int getDelaysRequired() {
         return delaysRequired;
@@ -62,10 +51,6 @@ public class MM1System extends QueueingSystem {
         this.meanServiceTime = meanServiceTime;
     }
 
-    public MM1System() {
-        new PropertiesLoader(PROPERTIES_FILE).readInputParameters(this);
-    }
-
     @Override
     public QueueState getInitialState(SimulationEnvironment<QueueState> environment) {
         return new QueueState(1);
@@ -88,5 +73,16 @@ public class MM1System extends QueueingSystem {
 
     public Terminator<QueueState> getDefaultTerminator() {
         return new DefaultTerminator();
+    }
+
+
+    private final class DefaultTerminator implements Terminator<QueueState> {
+        // simulation ends after a certain number of delays
+        @Override
+        public boolean simulationEnded(SimulationEnvironment<QueueState> env) {
+            SummaryStatistics customersDelayed = env.getAccumulatorRegistry().getStatistics(
+                    CUSTOMERS_DELAYED_ACCUMULATOR);
+            return customersDelayed.getN() >= delaysRequired;
+        }
     }
 }

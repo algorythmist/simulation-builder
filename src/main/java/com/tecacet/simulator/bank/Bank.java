@@ -49,7 +49,7 @@ public class Bank implements StochasticSystem<BankState>, Terminator<BankState> 
     }
     
     @Override
-    public BankState getNextState(SimulationEvent e, SimulationEnvironment<BankState> env) throws SimulationException {
+    public BankState getNextState(SimulationEvent e, SimulationEnvironment<BankState> env) {
         BankState state = env.getCurrentState();
         BankEvent event = (BankEvent) e;
 
@@ -103,13 +103,12 @@ public class Bank implements StochasticSystem<BankState>, Terminator<BankState> 
     }
 
     static String report(String name, SummaryStatistics accumulator) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("Number of samples = " + accumulator.getN() + "\n");
         sb.append("Total " + name + " = " + accumulator.getSum() + "\n");
         sb.append("Average " + name + " = " + accumulator.getMean() + "\n");
         sb.append("Minimum " + name + " = " + accumulator.getMin() + "\n");
         sb.append("Maximum " + name + " = " + accumulator.getMax() + "\n");
-
         return sb.toString();
     }
 
@@ -165,7 +164,7 @@ public class Bank implements StochasticSystem<BankState>, Terminator<BankState> 
     public static void main(String[] args) throws Exception {
         Bank bank = new Bank(4);
         // long seed = 137790L;
-        Simulator<BankState> simulator = new Simulator<BankState>(bank, bank);
+        Simulator<BankState> simulator = new Simulator<>(bank, bank);
         simulator.runSimulation();
         SummaryStatistics customerDelay = simulator.getAccumulatorRegistry().getStatistics(CUSTOMER_DELAY);
         SummaryStatistics numberInQueue = simulator.getAccumulatorRegistry().getStatistics(NUMBER_IN_QUEUE);
