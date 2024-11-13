@@ -1,4 +1,4 @@
-- The Server example results differ considerable from book.
+- The Server example results differ considerably from book.
    Design simulator debugging tools to debug this example
 - Add Jobshop tests
 - Decouple accumulator code from process dynamics via listeners

@@ -12,11 +12,11 @@ NOTE: If you do not implement the memento then the StateTransitionEvent
 will have null for the old state
 
 3. Implement IEventProcess or extend AbstractEventProcess.
-If you extends AdvancedEventProcess you only need to define update() 
+If you extend AdvancedEventProcess you only need to define update()
 to describe how changes in the state affect the event queue.
 You can use the insert() method for inserting newly created events.
 NOTE: If you extend AbstractEventProcess or make your EventProcess 
-implement IStateTransitionListener, the the simulator will automatically
+implement IStateTransitionListener, the simulator will automatically
 update your event process when a state transition occurs, otherwise
 you must manually update the event process 
 (or predefine all the events that will occur in the simulation)
