@@ -55,7 +55,7 @@ public class PropertiesLoader {
             try {
                 BeanUtils.copyProperty(bean, property, value);
                 //TODO this is silent if there is no setter - make it say something
-                logger.debug(property + " = " + BeanUtils.getProperty(bean, property));
+                logger.debug("{} = {}", property, BeanUtils.getProperty(bean, property));
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
