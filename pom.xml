@@ -7,8 +7,8 @@
 
 	<properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
 		<commons-math.version>3.6.1</commons-math.version>
 		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<commons-configuration.version>2.11.0</commons-configuration.version>
