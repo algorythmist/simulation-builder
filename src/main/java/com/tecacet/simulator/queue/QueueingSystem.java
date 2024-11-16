@@ -85,14 +85,14 @@ public class QueueingSystem implements StochasticSystem<QueueState> {
 
         switch (event.getType()) {
         case QueueEvent.ARRIVAL:
-            logger.debug("Customer arrived at " + event.getTime());
+            logger.debug("Customer arrived at {}", event.getTime());
             addArrival(event.getTime(), environment);
             Customer customer = new Customer(event.getTime());
             int server = state.accept(customer);
             if (server >= 0) {
                 customer.setTimeServiceStarted(event.getTime());
                 // server was idle, serve the new arrival, so we need departure
-                logger.debug("Customer entering service at " + event.getTime());
+                logger.debug("Customer entering service at {}", event.getTime());
                 addDeparture(event.getTime(), server, environment);
                 delayAccumulator.addValue(0.0);
             } else {
@@ -107,7 +107,7 @@ public class QueueingSystem implements StochasticSystem<QueueState> {
             if (state.isServerBusy(event.getServer())) {
                 Customer customer1 = state.getCustomerInService(event.getServer());
                 customer1.setTimeServiceStarted(event.getTime());
-                logger.debug("Customer " + customer1.getId() + " enters service.");
+                logger.debug("Customer {} enters service.", customer1.getId());
                 // queue next departure
                 addDeparture(event.getTime(), event.getServer(), environment);
                 double delay = event.getTime() - customer1.getArrivalTime();
@@ -118,7 +118,7 @@ public class QueueingSystem implements StochasticSystem<QueueState> {
             }
             break;
         default:
-            logger.error("Invalid event type " + event.getType());
+            logger.error("Invalid event type {}", event.getType());
         }
         return state;
     }
@@ -127,14 +127,14 @@ public class QueueingSystem implements StochasticSystem<QueueState> {
         double uni = env.getRandomGenerator().nextUniform(0.0, 1.0);
         double eventTime = time + arrivalDistribution.inverseCumulativeProbability(uni);
         env.addEvent(new QueueEvent(QueueEvent.ARRIVAL, eventTime, -1));
-        logger.debug("Scheduling next arrival at " + eventTime);
+        logger.debug("Scheduling next arrival at {}", eventTime);
     }
 
     protected void addDeparture(double time, int server, SimulationEnvironment<QueueState> env) {
         double uni = env.getRandomGenerator().nextUniform(0.0, 1.0);
         double eventTime = time + serviceDistribution.inverseCumulativeProbability(uni);
         env.addEvent(new QueueEvent(QueueEvent.DEPARTURE, eventTime, server));
-        logger.debug("Scheduling next departure at " + eventTime);
+        logger.debug("Scheduling next departure at {}", eventTime);
     }
 
 }
