@@ -45,7 +45,7 @@ class Policy {
         if (state.getInventory() < threshold) {
             amount = maxStorage - state.getInventory();
         }
-        logger.debug("Controller decided to order " + amount + " items.");
+        logger.debug("Controller decided to order {} items.", amount);
         return new InventoryDecision(amount);
     }
 }
